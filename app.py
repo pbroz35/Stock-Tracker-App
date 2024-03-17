@@ -1,3 +1,5 @@
+#Back-end
+
 import yfinance as yf
 from flask import request, render_template, jsonify, Flask
 
@@ -14,3 +16,8 @@ def get_stock_data():
     data = yf.Ticker(ticker).history(period='1y')
     return jsonify({'currentPrice': data.iloc[-1].Close, #close price and open price to compare if it went up/down
                       'openPrice': data.iloc[-1].Open })
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
