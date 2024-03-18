@@ -66,7 +66,11 @@ function addTickerToGrid(ticker) {
 
 // Function to update prices for all tickers
 function updatePrices() {
+
+    // Iterate through each ticker in the tickers array
     tickers.forEach(function (ticker) {
+
+        // Send an AJAX request to fetch stock data for the current ticker
         $.ajax({
             url: '/get_stock_data',
             type: 'POST',
@@ -74,9 +78,12 @@ function updatePrices() {
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (data) {
+                
+                // Calculate the percentage change in price
                 var changePercent = ((data.currentPrice - data.openPrice) / data.openPrice) * 100;
                 var colorClass;
-                // Determine color class based on price change percentage
+
+                // Determine the color class based on the price change percentage
                 if (changePercent <= -2) {
                     colorClass = 'dark-red';
                 } else if (changePercent < 0) {
@@ -89,29 +96,33 @@ function updatePrices() {
                     colorClass = 'dark-green';
                 }
 
-                // Update ticker price and percentage display
+                // Update the displayed price and percentage change for the ticker
                 $(`#${ticker}-price`).text(`$${data.currentPrice.toFixed(2)}`);
                 $(`#${ticker}-pct`).text(`${changePercent.toFixed(2)}%`);
                 $(`#${ticker}-price`).removeClass('dark-red red gray green dark-green');
                 $(`#${ticker}-pct`).removeClass('dark-red red gray green dark-green');
 
                 var flashClass;
+
+                // Determine the flash class based on the change in price compared to the last fetched price
                 if (lastPrices[ticker] > data.currentPrice) {
                     flashClass = 'red-flash';
-
                 } else if (lastPrices[ticker] < data.currentPrice) {
                     flashClass = 'green-flash';
-
                 } else {
-                    flashClass = 'gray-flash'
+                    flashClass = 'gray-flash';
                 }
-                lashPrice[ticker] = data.currentPrice;
 
+                // Update the last fetched price for the current ticker
+                lastPrices[ticker] = data.currentPrice;
 
+                // Add the flash class to the ticker element for a visual effect
                 $(`#${ticker}`).addClass(flashClass);
+
+                // Remove the flash class after 1000 milliseconds (1 second) for a brief visual effect
                 setTimeout(function () {
-                    $(`${ticker}`).removeClass(flashClass);
-                },1000);
+                    $(`#${ticker}`).removeClass(flashClass);
+                }, 1000);
             }
         });
     });
