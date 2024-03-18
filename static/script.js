@@ -33,7 +33,7 @@ $(document).ready(function () {
     // Handle form submission to add new ticker
     $('#add-ticker-form').submit(function (e) {
         e.preventDefault();
-        var newTicker = $('#new-ticker').val();
+        var newTicker = $('#new-ticker').val().toUpperCase();
         if (!tickers.includes(newTicker)) {
             // Add new ticker to tickers array and local storage
             tickers.push(newTicker);
