@@ -33,7 +33,7 @@ $(document).ready(function () {
     // Handle form submission to add new ticker
     $('#add-ticker-form').submit(function (e) {
         e.preventDefault();
-        var newTicker = $('#new-ticker').val().toUpperCase();
+        var newTicker = $('#new-ticker').val();
         if (!tickers.includes(newTicker)) {
             // Add new ticker to tickers array and local storage
             tickers.push(newTicker);
@@ -78,7 +78,7 @@ function updatePrices() {
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (data) {
-                
+
                 // Calculate the percentage change in price
                 var changePercent = ((data.currentPrice - data.openPrice) / data.openPrice) * 100;
                 var colorClass;
